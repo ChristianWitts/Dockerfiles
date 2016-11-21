@@ -12,3 +12,5 @@ RUN  apt-get update && \
 
 HEALTHCHECK --interval=5m --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
+
+ENTRYPOINT ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
