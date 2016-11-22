@@ -19,6 +19,9 @@ RUN  apt-get update && \
 RUN  /usr/local/openresty/luajit/bin/luarocks install magick && \
      /usr/local/openresty/luajit/bin/luarocks install s3
 
+ADD  nginx.conf      /usr/local/openresty/nginx/conf/nginx.conf
+ADD  serve_image.lua /usr/local/openresty/nginx/conf/serve_image.lua
+
 HEALTHCHECK --interval=5m --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
 
