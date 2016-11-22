@@ -1,9 +1,14 @@
-local sig, size, path, ext =
-    ngx.var.sig, ngx.var.size, ngx.var.path, ngx.var.ext
+local image_type, id, base, sizename, ext =
+    ngx.var.image_type, ngx.var.id, ngx.var.base, ngx.var.sizename, ngx.var.ext
 
-local secret = "hello_world"
-local images_dir = "images/"
-local cache_dir = "cache/"
+s3 = require 's3'
+
+local bucket = s3:connect{
+    awsRole="IAM Role",
+    bucket="S3 bucket name",
+}
+
+local remote_src = "http://example.s3.amazonaws.com/"
 
 local function return_not_found(msg)
     ngx.status = ngx.HTTP_NOT_FOUND
@@ -12,15 +17,7 @@ local function return_not_found(msg)
     ngx.exit(0)
 end
 
-local function calculate_signature(str)
-    return ngx.encode_base64(ngx.hmac_sha1(secret, str))
-        :gsub("[+/=]", {["+"] = "-", ["/"] = "_", ["="] = ","})
-        :sub(1,12)
-end
-
-if calculate_signature(size .. "/" .. path) ~= sig then
-    return_not_found("invalid signature")
-end
+bucket:get("")
 
 local source_fname = images_dir .. path
 
