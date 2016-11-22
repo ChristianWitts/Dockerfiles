@@ -5,10 +5,14 @@ LABEL Description="This image is used to start an image resizer container."
 
 RUN  apt-get update && \
      apt-get install -y --no-install-recommends \
-         libmagickwand-dev=8:6.8.9.9-7ubuntu5.1 \
-         luajit=2.0.4+dfsg-1 && \
-     rm -rf /var/lib/apt/lists/* && \
-     /usr/local/openresty/luajit/bin/luarocks install magick
+         git \
+         libmagickwand-dev \
+         libssl-dev \
+         luajit && \
+     rm -rf /var/lib/apt/lists/*
+
+RUN  /usr/local/openresty/luajit/bin/luarocks install magick && \
+     /usr/local/openresty/luajit/bin/luarocks install s3
 
 HEALTHCHECK --interval=5m --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
