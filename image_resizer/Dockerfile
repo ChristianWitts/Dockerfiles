@@ -7,8 +7,7 @@ RUN  apt-get update && \
      apt-get install -y --no-install-recommends \
          git \
          libmagickwand-dev \
-         libssl-dev \
-         luajit && \
+         libssl-dev && \
      rm -rf /var/lib/apt/lists/*
 
 RUN  /usr/local/openresty/luajit/bin/luarocks install magick && \
