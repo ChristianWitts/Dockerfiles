@@ -1,7 +1,13 @@
 FROM openresty/openresty:latest-xenial
 
 MAINTAINER cwitts@gmail.com
+
+ARG   GIT_COMMIT
+ARG   VERSION
 LABEL Description="This image is used to start an image resizer container."
+LABEL REPO="https://github.com/ChristianWitts/Dockerfiles"
+LABEL GIT_COMMIT=$GIT_COMMIT
+LABEL VERSION=$VERSION
 
 RUN  apt-get update && \
      apt-get install -y --no-install-recommends \
@@ -17,3 +23,4 @@ HEALTHCHECK --interval=5m --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
 
 ENTRYPOINT ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
+
