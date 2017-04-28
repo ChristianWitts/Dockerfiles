@@ -17,17 +17,11 @@ local function return_not_found(msg)
     ngx.exit(0)
 end
 
-bucket:get("")
-
-local source_fname = images_dir .. path
-
-local file = io.open(source_fname)
+local file = bucket:get(remote_src .. image_type .. "/" .. id .. "/" .. base .. "." .. ext)
 
 if not file then
     return_not_found()
 end
-
-file:close()
 
 local dest_fname = cache_dir .. ngx.md5(size .. "/" .. path) .. "." .. ext
 
